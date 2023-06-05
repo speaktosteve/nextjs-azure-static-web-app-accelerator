@@ -1,0 +1,132 @@
+variables:
+  - group: prompt-ui-variables
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        displayName: Build app
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.x'
+            displayName: 'Install Node.js'
+
+          - task: Cache@2
+            displayName: Cache node_modules
+            inputs:
+              key: 'node_modules | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
+              path: '$(Build.SourcesDirectory)/node_modules'
+              cacheHitVar: MODULES_CACHE_RESTORED
+
+          - script: |
+              npm install
+            displayName: 'Install node_modules'
+            condition: ne(variables.MODULES_CACHE_RESTORED, 'true')
+
+          - script: |
+              npm run audit-dependencies
+            displayName: 'Audit dependencies'
+
+          - script: |
+              npm run build
+            displayName: 'Build app'
+
+          - script: |
+              CI=true npm run test:ci
+            displayName: 'Run unit tests'
+
+          - task: PublishTestResults@2
+            displayName: 'Publish test report'
+            condition: succeededOrFailed()
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '**/junit.xml'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'build'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              replaceExistingArchive: true
+            displayName: 'Archive build'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+            displayName: 'Publish build'
+
+  - stage: Deploy_DEV
+    variables:
+      isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+    condition: and(succeeded(), eq(variables.isMain, true))
+    jobs:
+      - deployment: deploy
+        displayName: Deploy app to environment on static web app
+        environment: development-ui
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: none
+                # - checkout: none
+                - task: DownloadBuildArtifacts@1
+                  displayName: Download artifacts
+                  inputs:
+                    buildType: current
+                    downloadType: single
+                    artifactName: drop
+                    downloadPath: $(System.ArtifactsDirectory)
+
+                - task: ExtractFiles@1
+                  inputs:
+                    archiveFilePatterns: $(System.ArtifactsDirectory)/**/*.zip
+                    destinationFolder: ./
+                    cleanDestinationFolder: false
+
+                - task: AzureStaticWebApp@0
+                  displayName: Deploy App
+                  inputs:
+                    app_location: ./
+                    output_location: ./
+                    azure_static_web_apps_api_token: $(AZURE_DEV_DEPLOYMENT_TOKEN)
+                    skip_app_build: true
+
+  - stage: Deploy_DEMO
+    variables:
+      isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+    condition: and(succeeded(), eq(variables.isMain, true))
+    jobs:
+      - deployment: deploy
+        displayName: Deploy app to environment on static web app
+        environment: demo-ui
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: none
+                # - checkout: none
+                - task: DownloadBuildArtifacts@1
+                  displayName: Download artifacts
+                  inputs:
+                    buildType: current
+                    downloadType: single
+                    artifactName: drop
+                    downloadPath: $(System.ArtifactsDirectory)
+
+                - task: ExtractFiles@1
+                  inputs:
+                    archiveFilePatterns: $(System.ArtifactsDirectory)/**/*.zip
+                    destinationFolder: ./
+                    cleanDestinationFolder: false
+
+                - task: AzureStaticWebApp@0
+                  displayName: Deploy App
+                  inputs:
+                    app_location: ./
+                    output_location: ./
+                    azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
+                    skip_app_build: true
