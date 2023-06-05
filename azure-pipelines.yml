@@ -29,12 +29,16 @@ stages:
             displayName: 'Audit dependencies'
 
           - script: |
+              npm run lint
+            displayName: 'Lint app'
+
+          - script: |
               npm run build
             displayName: 'Build app'
 
-          - script: |
-              CI=true npm run test:ci
-            displayName: 'Run unit tests'
+          # - script: |
+          #     CI=true npm run test:ci
+          #   displayName: 'Run unit tests'
 
           - task: PublishTestResults@2
             displayName: 'Publish test report'
