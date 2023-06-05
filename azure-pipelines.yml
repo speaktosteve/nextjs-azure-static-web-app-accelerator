@@ -97,5 +97,4 @@ stages:
                     app_location: ./
                     output_location: 'build'
                     azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
-                    skip_app_build: true
                     is_static_export: true
