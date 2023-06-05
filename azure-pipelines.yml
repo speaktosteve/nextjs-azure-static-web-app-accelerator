@@ -59,42 +59,6 @@ stages:
               publishLocation: 'Container'
             displayName: 'Publish build'
 
-  - stage: Deploy_DEV
-    variables:
-      isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-    condition: and(succeeded(), eq(variables.isMain, true))
-    jobs:
-      - deployment: deploy
-        displayName: Deploy app to environment on static web app
-        environment: development-ui
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - download: none
-                # - checkout: none
-                - task: DownloadBuildArtifacts@1
-                  displayName: Download artifacts
-                  inputs:
-                    buildType: current
-                    downloadType: single
-                    artifactName: drop
-                    downloadPath: $(System.ArtifactsDirectory)
-
-                - task: ExtractFiles@1
-                  inputs:
-                    archiveFilePatterns: $(System.ArtifactsDirectory)/**/*.zip
-                    destinationFolder: ./
-                    cleanDestinationFolder: false
-
-                - task: AzureStaticWebApp@0
-                  displayName: Deploy App
-                  inputs:
-                    app_location: ./
-                    output_location: ./
-                    azure_static_web_apps_api_token: $(AZURE_DEV_DEPLOYMENT_TOKEN)
-                    skip_app_build: true
-
   - stage: Deploy_DEMO
     variables:
       isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
