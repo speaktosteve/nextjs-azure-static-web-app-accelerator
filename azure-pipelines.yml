@@ -94,7 +94,7 @@ stages:
                 - task: AzureStaticWebApp@0
                   displayName: Deploy App
                   inputs:
-                    app_location: ./
+                    app_location: ./server/app/
                     output_location: ./
                     azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
                     skip_app_build: true
