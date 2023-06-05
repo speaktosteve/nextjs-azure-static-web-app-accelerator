@@ -1,5 +1,5 @@
 variables:
-  - group: prompt-ui-variables
+  - group: ui-variables
 
 stages:
   - stage: Build
