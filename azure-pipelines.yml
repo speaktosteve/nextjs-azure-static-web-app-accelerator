@@ -1,99 +1,32 @@
-variables:
+name: Azure Static Web Apps CI/CD
+
+pr:
+  branches:
+    include:
+      - main
+trigger:
+  branches:
+    include:
+      - main
+
+jobs:
+- job: build_and_deploy_job
+  displayName: Build and Deploy Job
+  condition: or(eq(variables['Build.Reason'], 'Manual'),or(eq(variables['Build.Reason'], 'PullRequest'),eq(variables['Build.Reason'], 'IndividualCI')))
+  pool:
+    vmImage: ubuntu-latest
+  variables:
   - group: ui-variables
+  steps:
+  - checkout: self
+    submodules: true
+  - task: AzureStaticWebApp@0
+    inputs:
+      azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
+###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+# For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+      app_location: "/" # App source code path
+      api_location: "" # Api source code path - optional
+      output_location: "" # Built app content directory - optional
+###### End of Repository/Build Configurations ######
 
-stages:
-  - stage: Build
-    jobs:
-      - job: Build
-        displayName: Build app
-        steps:
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '16.x'
-            displayName: 'Install Node.js'
-
-          - task: Cache@2
-            displayName: Cache node_modules
-            inputs:
-              key: 'node_modules | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
-              path: '$(Build.SourcesDirectory)/node_modules'
-              cacheHitVar: MODULES_CACHE_RESTORED
-
-          - script: |
-              npm install
-            displayName: 'Install node_modules'
-            condition: ne(variables.MODULES_CACHE_RESTORED, 'true')
-
-          - script: |
-              npm run audit-dependencies
-            displayName: 'Audit dependencies'
-
-          - script: |
-              npm run lint
-            displayName: 'Lint app'
-
-          - script: |
-              npm run build
-            displayName: 'Build app'
-
-          # - script: |
-          #     CI=true npm run test:ci
-          #   displayName: 'Run unit tests'
-
-          - task: PublishTestResults@2
-            displayName: 'Publish test report'
-            condition: succeededOrFailed()
-            inputs:
-              testRunner: JUnit
-              testResultsFiles: '**/junit.xml'
-
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: '/'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              replaceExistingArchive: true
-            displayName: 'Archive build'
-
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
-            displayName: 'Publish build'
-
-  - stage: Deploy_DEMO
-    variables:
-      isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-    condition: and(succeeded(), eq(variables.isMain, true))
-    jobs:
-      - deployment: deploy
-        displayName: Deploy app to environment on static web app
-        environment: demo-ui
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - download: none
-                # - checkout: none
-                - task: DownloadBuildArtifacts@1
-                  displayName: Download artifacts
-                  inputs:
-                    buildType: current
-                    downloadType: single
-                    artifactName: drop
-                    downloadPath: $(System.ArtifactsDirectory)
-
-                - task: ExtractFiles@1
-                  inputs:
-                    archiveFilePatterns: $(System.ArtifactsDirectory)/**/*.zip
-                    destinationFolder: ./
-                    cleanDestinationFolder: false
-
-                - task: AzureStaticWebApp@0
-                  displayName: Deploy App
-                  inputs:
-                    app_location: ./
-                    output_location: ''
-                    azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
