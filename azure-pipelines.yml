@@ -95,6 +95,5 @@ stages:
                   displayName: Deploy App
                   inputs:
                     app_location: ./
-                    output_location: 'build'
+                    output_location: ''
                     azure_static_web_apps_api_token: $(AZURE_DEMO_DEPLOYMENT_TOKEN)
-                    is_static_export: true
