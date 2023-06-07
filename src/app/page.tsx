@@ -1,5 +1,5 @@
-import { getStars } from './components/common/getStars';
-import { Counter } from './components/common/counter';
+import { getStars } from './components/shared/getStars';
+import { Counter } from './components/shared/counter';
 
 const Page = async () => {
   const stars = await getStars();

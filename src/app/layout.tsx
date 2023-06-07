@@ -11,10 +11,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={inter.className}>
         <nav className="flex justify-center gap-4 py-4  border-b border-b-white">
           <Link href="/">Home</Link>
-          <Link href="/test">Test</Link>
+          <Link href="/tabular-ssr">Tabular SSR</Link>
         </nav>
 
-        <main className="flex min-h-screen justify-center items-center">
+        <main className="flex min-h-screen justify-center pt-5">
           {children}
         </main>
       </body>
