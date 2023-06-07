@@ -1,6 +1,7 @@
+import { Post } from '@/types/post';
 import uuid from 'react-uuid';
 
-const getData = async () => {
+const getData = async (): Promise<Post[]> => {
   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
   if (!res.ok) {
     throw new Error('Failed to fetch data');
@@ -21,7 +22,7 @@ export const TabularData = async () => {
         </tr>
       </thead>
       <tbody>
-        {data.map((post: any) => {
+        {data.map((post: Post) => {
           return (
             <tr key={uuid()}>
               <td className="border">{post.id}</td>
