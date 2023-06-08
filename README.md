@@ -1,7 +1,5 @@
 [![Azure Static Web Apps CI/CD](https://github.com/speaktosteve/nextjs-azure-static-web-app-accelerator/actions/workflows/azure-static-web-apps.yml/badge.svg)](https://github.com/speaktosteve/nextjs-azure-static-web-app-accelerator/actions/workflows/azure-static-web-apps.yml)
 
-[![New Ava InnerSource](https://img.shields.io/badge/New-Ava--InnerSource-%23DC4600?labelColor=%23e5e5e5)](https://avanade.github.io/maturity-model/)
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 Its primary goal is to provide a simple Next JS application (using App Routes) along with an example Azure Dev Ops pipeline and GitHub action to provide ability to deploy the app to an [Azure Static Web App](https://azure.microsoft.com/en-us/products/app-service/static/).
