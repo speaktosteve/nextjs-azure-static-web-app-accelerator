@@ -21,6 +21,9 @@ body {
 }
 
 @layer components {
+  .table {
+    @apply w-full;
+  }
   .table th,
   .table td {
     @apply bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-800 p-4 pl-8 text-left;

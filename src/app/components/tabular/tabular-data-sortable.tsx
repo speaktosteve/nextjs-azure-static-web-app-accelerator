@@ -4,10 +4,12 @@ import { usePosts } from '@/hooks/usePosts';
 import { Post } from '@/types/post';
 import { useEffect, useState } from 'react';
 import uuid from 'react-uuid';
+import { Spinner } from '../shared/spinner';
 
 export default function TabularDataSortable() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isSortAsc, setIsSortAsc] = useState<boolean>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getPosts();
@@ -16,6 +18,7 @@ export default function TabularDataSortable() {
   const getPosts = async () => {
     const posts = await usePosts();
     setPosts(posts);
+    setIsLoading(false);
   };
 
   const onSortButtonClick = (): void => {
@@ -38,18 +41,24 @@ export default function TabularDataSortable() {
   return (
     <table className="table">
       <thead>
-        <tr>
-          <th>ID </th>
-          <th>
-            Title
-            <button
-              onClick={onSortButtonClick}
-              className="m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-            >
-              sort
-            </button>
-          </th>
-        </tr>
+        {isLoading ? (
+          <tr key={uuid()}>
+            <th colSpan={2}>Loading data</th>
+          </tr>
+        ) : (
+          <tr>
+            <th>ID </th>
+            <th>
+              Title
+              <button
+                onClick={onSortButtonClick}
+                className="mx-3 p-0 underline"
+              >
+                sort
+              </button>
+            </th>
+          </tr>
+        )}
       </thead>
       <tbody>
         {posts.map((post: Post) => {
