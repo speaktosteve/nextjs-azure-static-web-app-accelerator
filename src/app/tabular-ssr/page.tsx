@@ -1,4 +1,4 @@
-import { TabularData } from '../components/tabular/tabular-data';
+import TabularData from '../components/tabular/tabular-data';
 
 const Page = () => {
   return (

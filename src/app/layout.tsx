@@ -12,6 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <nav className="flex justify-center gap-4 py-4  border-b border-b-white">
           <Link href="/">Home</Link>
           <Link href="/tabular-ssr">Tabular SSR</Link>
+          <Link href="/tabular-ssr-sortable">Tabular SSR (with sorting)</Link>
         </nav>
 
         <main className="flex min-h-screen justify-center pt-5">
