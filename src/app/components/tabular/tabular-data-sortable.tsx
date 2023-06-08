@@ -36,12 +36,12 @@ export default function TabularDataSortable() {
   };
 
   return (
-    <table>
+    <table className="table">
       <thead>
         <tr>
-          <th className="border">ID </th>
-          <th className="border">
-            Title{' '}
+          <th>ID </th>
+          <th>
+            Title
             <button
               onClick={onSortButtonClick}
               className="m-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -55,8 +55,8 @@ export default function TabularDataSortable() {
         {posts.map((post: Post) => {
           return (
             <tr key={uuid()}>
-              <td className="border">{post.id}</td>
-              <td className="border">{post.title}</td>
+              <td>{post.id}</td>
+              <td>{post.title}</td>
             </tr>
           );
         })}

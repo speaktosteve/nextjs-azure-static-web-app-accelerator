@@ -6,19 +6,20 @@ const TabularData = async () => {
   const posts = await usePosts();
 
   return (
-    <table>
+    <table className="table">
       <thead>
         <tr>
-          <th className="border">ID</th>
-          <th className="border">Title</th>
+          <th>ID </th>
+          <th>Title </th>
         </tr>
       </thead>
+
       <tbody>
         {posts.map((post: Post) => {
           return (
             <tr key={uuid()}>
-              <td className="border">{post.id}</td>
-              <td className="border">{post.title}</td>
+              <td>{post.id}</td>
+              <td>{post.title}</td>
             </tr>
           );
         })}

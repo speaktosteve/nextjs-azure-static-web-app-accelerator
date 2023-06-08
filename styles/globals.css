@@ -3,18 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  --foreground: theme('colors.slate.800');
+  --background: theme('colors.slate.100');
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 0, 0, 0;
+    --foreground: theme('colors.slate.100');
+    --background: theme('colors.slate.800');
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: var(--foreground);
+  background: var(--background);
+  font-size: 0.85rem;
+}
+
+@layer components {
+  .table th,
+  .table td {
+    @apply bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-800 p-4 pl-8 text-left;
+  }
 }

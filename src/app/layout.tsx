@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Link href="/tabular-ssr-sortable">Tabular SSR (with sorting)</Link>
         </nav>
 
-        <main className="flex min-h-screen justify-center pt-5">
+        <main className="flex justify-center pt-5 w-3/4 mx-auto text-center">
           {children}
         </main>
       </body>
