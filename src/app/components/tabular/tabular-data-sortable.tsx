@@ -43,7 +43,11 @@ export default function TabularDataSortable() {
       <thead>
         {isLoading ? (
           <tr key={uuid()}>
-            <th colSpan={2}>Loading data</th>
+            <th colSpan={2}>
+              <span className="flex gap-3">
+                Loading data <Spinner />
+              </span>
+            </th>
           </tr>
         ) : (
           <tr>
