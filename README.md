@@ -62,3 +62,4 @@ In order to allow either the ADO pipeline, or the GitHub action to connect to yo
   ![github repository secret](docs/github-repository-secret.png?raw=true 'GitHub repository secret')
 - if you wish to use the Azure DevOps pipeline then you will need to add the deployment token as a variable called AZURE_STATIC_WEB_APPS_API_TOKEN in a variable group named 'ui-variables'
   ![ado variable](docs/ado-variables.png?raw=true 'ADO variable')
+- an optional BUILD_VERSION can be added, mapped to the $(Build.BuildNumber) variable. This will be rendered on the /config page on the app to help inform the user as to what version of the app has been deployed.

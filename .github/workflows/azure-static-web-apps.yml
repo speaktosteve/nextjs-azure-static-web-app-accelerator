@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: 👷 🚀 Build and Deploy App to Azure Static Web Apps
 
 on:
   push:
@@ -10,10 +10,33 @@ on:
       - main
 
 jobs:
+  createVersion:
+    name: 🔢 Create Version
+    outputs:
+      pkgVersion: ${{ steps.tag_version.outputs.new_tag }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+      - name: Bump version and push tag
+        id: tag_version
+        uses: laputansoft/github-tag-action@v4.6
+        with:
+          release_branches: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.package-version.outputs.version }}
+
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: 👷 🚀 Build and Deploy Job
+    needs: [createVersion]
+    env:
+      BUILD_VERSION: ${{needs.createVersion.outputs.pkgVersion}}
     steps:
       - uses: actions/checkout@v3
         with:
