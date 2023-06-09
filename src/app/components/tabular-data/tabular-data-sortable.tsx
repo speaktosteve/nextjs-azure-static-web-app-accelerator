@@ -3,7 +3,7 @@
 import { usePosts } from '@/hooks/usePosts';
 import { Post } from '@/types/post';
 import { useEffect, useState } from 'react';
-import uuid from 'react-uuid';
+import { nanoid } from 'nanoid';
 import { Spinner } from '../shared/spinner';
 
 export default function TabularDataSortable() {
@@ -42,7 +42,7 @@ export default function TabularDataSortable() {
     <table className="table">
       <thead>
         {isLoading ? (
-          <tr key={uuid()}>
+          <tr>
             <th colSpan={2}>
               <span className="flex gap-3">
                 Loading data <Spinner />
@@ -67,7 +67,7 @@ export default function TabularDataSortable() {
       <tbody>
         {posts.map((post: Post) => {
           return (
-            <tr key={uuid()}>
+            <tr key={nanoid()}>
               <td>{post.id}</td>
               <td>{post.title}</td>
             </tr>

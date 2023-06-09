@@ -1,6 +1,6 @@
 import { usePosts } from '@/hooks/usePosts';
 import { Post } from '@/types/post';
-import uuid from 'react-uuid';
+import { nanoid } from 'nanoid';
 
 const TabularData = async () => {
   const posts = await usePosts();
@@ -17,7 +17,7 @@ const TabularData = async () => {
       <tbody>
         {posts.map((post: Post) => {
           return (
-            <tr key={uuid()}>
+            <tr key={nanoid()}>
               <td>{post.id}</td>
               <td>{post.title}</td>
             </tr>
