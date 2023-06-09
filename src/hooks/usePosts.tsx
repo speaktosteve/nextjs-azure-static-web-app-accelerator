@@ -1,6 +1,6 @@
 import { Post } from '@/types/post';
 
-export const usePosts = async (): Promise<Post> => {
+export const usePosts = async (): Promise<Post[]> => {
   const res = await fetch(
     'https://jsonplaceholder.typicode.com/posts?userId=1'
   );
