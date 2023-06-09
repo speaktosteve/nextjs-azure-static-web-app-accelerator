@@ -30,6 +30,10 @@ jobs:
           release_branches: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.package-version.outputs.version }}
+      - name: Create env file
+        run: |
+          touch .env
+          echo BUILD_VERSION=123 >> .env
 
   build_and_deploy_job:
     runs-on: ubuntu-latest
@@ -56,7 +60,6 @@ jobs:
           ENABLE_PREVIEW_FEATURES: true
           FUNCTION_LANGUAGE: node
           FUNCTION_LANGUAGE_VERSION: 16
-          BUILD_VERSION: 13
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
