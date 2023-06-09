@@ -20,11 +20,26 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-### Learn More
+### Styling
+
+This app leverages PostCSS and Tailwind. There are the beginnings of a theme in [src/styles/globals.css](src/styles/globals.css)
+
+### Structure
+
+📦
+┣ 📂 docs (assets referenced by this readme)
+┣ 📂 src
+┃ ┣ 📂 app
+┃ ┃ ┣ 📂 components (contains page-specific and shared components)
+┃ ┃ ┃ ┣ 📂 shared (shared components)
+┃ ┣ 📂 hooks (contains React hooks for reusable functionality)
+┃ ┣ 📂 images (contains pngs etc)
+┃ ┣ 📂 styles (contains CSS files)
+┃ ┣ 📂 types (TS types)
+
+### Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
