@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Counter } from './_Counter';
+import { Counter } from './Counter';
 
 it('Counter element is successfully rendered', () => {
   const { getByText } = render(<Counter />);

@@ -1,4 +1,4 @@
-import { Counter } from './_Counter';
+import { Counter } from './Counter';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction

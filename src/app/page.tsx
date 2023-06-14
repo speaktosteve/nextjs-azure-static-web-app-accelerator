@@ -1,5 +1,5 @@
 import { usePost } from '@/hooks/usePost';
-import { Counter } from './components/shared/_Counter';
+import { Counter } from './components/shared/Counter';
 import { Post } from '@/types/post';
 
 const Page = async () => {
