@@ -11,6 +11,8 @@ export const Counter = () => {
       <button
         onClick={() => setCount(count + 1)}
         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        role="button"
+        aria-label="Increment count"
       >
         Click me
       </button>
