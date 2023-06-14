@@ -4,7 +4,7 @@ import { usePosts } from '@/hooks/usePosts';
 import { Post } from '@/types/post';
 import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
-import { Spinner } from '../shared/spinner';
+import { Spinner } from '../shared/Spinner';
 
 export default function TabularDataSortable() {
   const [posts, setPosts] = useState<Post[]>([]);

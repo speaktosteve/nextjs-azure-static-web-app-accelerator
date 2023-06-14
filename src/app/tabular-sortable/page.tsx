@@ -1,4 +1,4 @@
-import TabularDataSortable from '../components/tabular-data/tabular-data-sortable';
+import TabularDataSortable from '../components/tabular-data/TabularDataSortable';
 
 const Page = () => {
   return (
