@@ -50,22 +50,6 @@ stages:
               testRunner: JUnit
               testResultsFiles: '**/junit.xml'
 
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: './next'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              replaceExistingArchive: true
-            displayName: 'Archive build'
-
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
-            displayName: 'Publish build'
-
   - stage: Deploy
     jobs:
       - job: deploy
