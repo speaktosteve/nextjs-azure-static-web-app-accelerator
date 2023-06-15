@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "test:ci": "npm run test -- --watchAll=false --reporters=default --reporters=jest-junit",
+    "test:ci": "jest --ci --testResultsProcessor=jest-junit",
     "audit-dependencies": "audit-ci --config audit-ci.json",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -24,6 +24,7 @@
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "eslint-plugin-react": "^7.32.2",
+    "jest-junit": "^16.0.0",
     "nanoid": "^4.0.2",
     "next": "13.4.3",
     "postcss": "8.4.23",
