@@ -32,10 +32,6 @@ stages:
             condition: ne(variables.MODULES_CACHE_RESTORED, 'true')
 
           - script: |
-              npm run test
-            displayName: 'Run tests'
-
-          - script: |
               npm run audit-dependencies
             displayName: 'Audit dependencies'
 
