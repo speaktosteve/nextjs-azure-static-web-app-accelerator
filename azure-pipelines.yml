@@ -9,6 +9,67 @@ trigger:
     include:
       - main
 stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        displayName: Build app
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.x'
+            displayName: 'Install Node.js'
+
+          - task: Cache@2
+            displayName: Cache node_modules
+            inputs:
+              key: 'node_modules | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
+              path: '$(Build.SourcesDirectory)/node_modules'
+              cacheHitVar: MODULES_CACHE_RESTORED
+
+          - script: |
+              npm install
+            displayName: 'Install node_modules'
+            condition: ne(variables.MODULES_CACHE_RESTORED, 'true')
+
+          - script: |
+              npm run test
+            displayName: 'Run tests'
+
+          - script: |
+              npm run audit-dependencies
+            displayName: 'Audit dependencies'
+
+          - script: |
+              npm run build
+            displayName: 'Build app'
+
+          - script: |
+              CI=true npm run test:ci
+            displayName: 'Run unit tests'
+
+          - task: PublishTestResults@2
+            displayName: 'Publish test report'
+            condition: succeededOrFailed()
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '**/junit.xml'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: 'build'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              replaceExistingArchive: true
+            displayName: 'Archive build'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+            displayName: 'Publish build'
+
   - stage: Deploy
     jobs:
       - job: deploy
